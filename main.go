@@ -6,5 +6,5 @@ package main
 import "osabori/cmd"
 
 func main() {
-	cmd.OutputLog()
+	cmd.Execute()
 }
