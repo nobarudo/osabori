@@ -13,16 +13,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	waitTime int
+)
+
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "This command will output a prompt like you are working. (Use the -t option to specify the time.)",
+	Long: `This command will output a prompt like you are working.
+	option:
+	-t --time int You can specify the run time in minutes.(it defaults to 5 minutes.)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		OutputLog()
 	},
@@ -36,7 +37,7 @@ func OutputLog() {
 	glg.Println("The start of the fake build tool.")
 	glg.Println("=================================================")
 	glg.Warn("Be careful, if someone carefully reviews your prompts, they'll give away your true identity.")
-	for i := 1; i <= 5; i++ {
+	for i := 1; i <= waitTime; i++ {
 		for j := 0; j < 2; j++ {
 			fakeDownloadBar()
 			fakeInstallBar()
@@ -99,6 +100,13 @@ func fakeInstallLog() {
 }
 
 func init() {
+	startCmd.Flags().IntVarP(
+        &waitTime,
+        "time",
+        "t",
+        5,
+        "You can specify the run time in minutes.",
+    )
 	rootCmd.AddCommand(startCmd)
 
 	// Here you will define your flags and configuration settings.
