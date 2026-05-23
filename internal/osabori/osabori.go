@@ -5,11 +5,19 @@ import (
 
 	"github.com/k0kubun/go-ansi"
 	"github.com/kpango/glg"
+	"github.com/pterm/pterm"
+	"github.com/pterm/pterm/putils"
 	"github.com/schollz/progressbar/v3"
 )
 
 // Start executes the fake work simulation for the specified duration in minutes.
 func Start(waitTime int) {
+	text := "OSABORI"
+
+	letters := putils.LettersFromString(text)
+
+	pterm.DefaultBigText.WithLetters(letters).Render()
+
 	glg.Success("Prompto moves around, please take a break. Have a good time.")
 	glg.Info("fake Download. Don't worry, not downloading anything.")
 	glg.Println("=================================================")
@@ -23,6 +31,7 @@ func Start(waitTime int) {
 			fakeInstallBar()
 		}
 		glg.Warn(i, " minute has passed")
+		pterm.DefaultBox.Println(i, "minute has passed")
 	}
 
 	glg.Success("Success!!!!")
@@ -30,12 +39,14 @@ func Start(waitTime int) {
 }
 
 func fakeDownloadBar() {
-	bar := progressbar.Default(100, "downloading")
-	for i := 0; i < 100; i++ {
-		time.Sleep(200 * time.Millisecond)
-		_ = bar.Add(1)
+	for j := 0; j < 4; j++ {
+		bar := progressbar.Default(100, "downloading")
+		for i := 0; i < 50; i++ {
+			time.Sleep(100 * time.Millisecond)
+			_ = bar.Add(2)
+		}
+		bar.Clear()
 	}
-	_ = bar.Finish()
 	fakeDownloadLog()
 }
 
