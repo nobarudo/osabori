@@ -1,22 +1,26 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"os"
+	"osabori/internal/osabori"
 
 	"github.com/spf13/cobra"
+)
+
+var (
+	waitTime int
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "osabori",
 	Short: "This command will output a prompt like you are working",
-	Long: `This command will output a prompt like you are working`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Long: `This command will output a prompt like you are working.
+Option:
+-t --time int You can specify the run time in minutes.(it defaults to 5 minutes.)`,
+	Run: func(cmd *cobra.Command, args []string) {
+		osabori.Start(waitTime)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -29,13 +33,12 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.osabori.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	rootCmd.Flags().IntVarP(
+		&waitTime,
+		"time",
+		"t",
+		5,
+		"You can specify the run time in minutes.",
+	)
 }
 
