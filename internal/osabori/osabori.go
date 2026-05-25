@@ -15,13 +15,18 @@ import (
 // Start executes the fake work simulation for the specified duration in minutes.
 func Start(waitTime int) {
 	logger := logger.New()
+	pterm.DefaultCenter.Println("This is a tool that simply keeps the prompt running while you take a break.\nYou might see error messages, but don't worry. It's not doing anything.")
+
+	// Generate BigLetters and store in 's'
+	s, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString("OSABORI")).Srender()
+
+	// Print the BigLetters 's' centered in the terminal
+	pterm.DefaultCenter.Println(s)
+
+	// Print each line of the text separately centered in the terminal
+	pterm.DefaultCenter.WithCenterEachLineSeparately().Println("This text is centered!\nBut each line is\ncentered\nseparately")
+
 	slog.SetDefault(logger)
-
-	text := "OSABORI"
-
-	letters := putils.LettersFromString(text)
-
-	pterm.DefaultBigText.WithLetters(letters).Render()
 
 	slog.Info("Prompto moves around, please take a break. Have a good time.")
 	slog.Debug("fake Download. Don't worry, not downloading anything.")
@@ -31,11 +36,9 @@ func Start(waitTime int) {
 	slog.Warn("Be careful, if someone carefully reviews your prompts, they'll give away your true identity.")
 
 	for i := 1; i <= waitTime; i++ {
-		for j := 0; j < 2; j++ {
-			fakeDownloadBar()
-			fakeInstallBar()
-		}
-		slog.Warn("%d minute has passed", i)
+		fakeDownloadBar()
+		fakeInstallBar()
+		fakeTreeLog()
 		pterm.DefaultBox.Println(i, "minute has passed")
 	}
 
@@ -96,4 +99,51 @@ func fakeInstallLog() {
 	slog.Warn("Different versions of salary. Check your version.")
 	slog.Debug("Looks like the installation is complete.")
 	slog.Debug("It's kind of a message like that.")
+}
+
+func fakeTreeLog() {
+	logger := pterm.DefaultLogger.WithLevel(pterm.LogLevelTrace)
+	logger.Trace("Doing not so important stuff", logger.Args("priority", "super low"))
+
+	interstingStuff := map[string]any{
+		"when were crayons invented":  "1903",
+		"what is the meaning of life": 42,
+		"is this interesting":         true,
+	}
+
+	logger.Debug("This might be interesting", logger.ArgsFromMap(interstingStuff))
+	sleep()
+	logger.Info("That was actually interesting", logger.Args("such", "wow"))
+	sleep()
+	logger.Warn("Oh no, I see an error coming to us!", logger.Args("speed", 88, "measures", "mph"))
+	sleep()
+	logger.Error("Damn, here it is!", logger.Args("error", "something went wrong"))
+	sleep()
+	logger.Info("But what's really cool is, that you can print very long logs, and PTerm will automatically wrap them for you! Say goodbye to text, that has weird line breaks!", logger.Args("very", "long"))
+	sleep()
+	logger.Error("Oh no, this process is getting killed!", logger.Args("fatal", false))
+	logger.Trace("Doing not so important stuff", logger.Args("priority", "super low"))
+	sleep()
+
+	// Define a map with interesting stuff
+	interstingStuff = map[string]any{
+		"when were crayons invented":  "1903",
+		"what is the meaning of life": 42,
+		"is this interesting":         true,
+	}
+
+	logger.Debug("This might be interesting", logger.ArgsFromMap(interstingStuff))
+	sleep()
+	logger.Info("That was actually interesting", logger.Args("such", "wow"))
+	sleep()
+	logger.Warn("Oh no, I see an error coming to us!", logger.Args("speed", 88, "measures", "mph"))
+	sleep()
+	logger.Error("Damn, here it is!", logger.Args("error", "something went wrong"))
+	sleep()
+	logger.Info("But what's really cool is, that you can print very long logs, and PTerm will automatically wrap them for you! Say goodbye to text, that has weird line breaks!", logger.Args("very", "long"))
+}
+
+// Function to pause the execution for 3 seconds
+func sleep() {
+	time.Sleep(time.Second * 3)
 }
