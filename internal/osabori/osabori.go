@@ -2,6 +2,7 @@ package osabori
 
 import (
 	"log/slog"
+	"math/rand/v2"
 
 	"osabori/internal/logger"
 
@@ -32,13 +33,23 @@ func Start(waitTime int) {
 	slog.Info("=================================================")
 	slog.Warn("Be careful, if someone carefully reviews your prompts, they'll give away your true identity.")
 
+	actions := []func(){
+		fakeDownload,
+		fakeProgressbar,
+	}
+
 	for i := 1; i <= waitTime; i++ {
-		fakeDownloadBar()
-		fakeInstallBar()
-		fakeTreeLog()
+		randomIndex := rand.IntN(len(actions))
+		actions[randomIndex]()
 		pterm.DefaultBox.Println(i, "minute has passed")
 	}
 
 	slog.Info("Success!!!!")
 	slog.Info("It's time. Get back to work.")
+}
+
+func fakeDownload() {
+	fakeDownloadBar()
+	fakeInstallBar()
+	fakeTreeLog()
 }
